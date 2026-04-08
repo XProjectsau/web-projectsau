@@ -945,39 +945,87 @@
     </div>
   </section>
 
-  <!-- Sentria Section -->
+  <!-- SentriaSec Product Section -->
   <section class="sentria" id="sentria">
     <div class="container">
-      <div class="sentria-content">
-        <div class="sentria-info reveal">
-          <div class="version-badge">v1.5 Stable // Ready to deploy</div>
-          <h2>Sentria Platform</h2>
-          <p>Plataforma integral de ciberdefensa. Auditamos y blindamos tu ecosistema digital bajo los estándares internacionales más estrictos. Prevención, detección y respuesta automatizada en un único panel.</p>
-          <ul class="feature-list">
-            <li>Escaneo continuo de vulnerabilidades</li>
-            <li>Dashboard SOC en tiempo real</li>
-            <li>Agente stealth multiplataforma</li>
-            <li>Alertas y respuesta automatizada</li>
-            <li>Gestión de políticas y cumplimiento</li>
+      <div class="section-header" style="margin-bottom:3rem">
+        <div class="version-badge" style="display:inline-block;margin-bottom:1rem">v2.4 Stable // Ready to deploy</div>
+        <h2>SentriaSec</h2>
+        <p class="subtitle">Ciberseguridad + Soporte IT en un solo panel</p>
+        <p>Agente multiplataforma, dashboard en tiempo real y cumplimiento normativo automatizado. Elige el plan que encaje con tu empresa.</p>
+      </div>
+
+      <!-- Tiers Grid -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2rem;margin-bottom:3rem">
+
+        <!-- Control -->
+        <div class="card reveal" style="border-top:4px solid #0ea5e9;padding:2rem">
+          <h3 style="color:#0ea5e9;margin-bottom:0.5rem">SentriaSec Control</h3>
+          <p style="font-size:0.85rem;color:#718096;margin-bottom:1.5rem">Gestión IT centralizada</p>
+          <ul class="feature-list" style="margin-bottom:1.5rem">
+            <li>Inventario de dispositivos</li>
+            <li>Control horario laboral</li>
+            <li>Gestión de periféricos USB</li>
+            <li>Terminal remoto</li>
+            <li>Sistema de tickets</li>
+            <li>Métricas en tiempo real (CPU, RAM, disco)</li>
           </ul>
-          <div class="compliance-badges">
+          <p style="font-size:0.8rem;color:#a0aec0">Ideal para equipos que necesitan visibilidad y control de su parque informático.</p>
+        </div>
+
+        <!-- Protect -->
+        <div class="card reveal" style="border-top:4px solid #10b981;padding:2rem;transform:scale(1.03)">
+          <div style="background:#10b981;color:white;font-size:0.7rem;font-weight:700;padding:0.2rem 0.8rem;border-radius:20px;display:inline-block;margin-bottom:0.8rem">RECOMENDADO</div>
+          <h3 style="color:#10b981;margin-bottom:0.5rem">SentriaSec Protect</h3>
+          <p style="font-size:0.85rem;color:#718096;margin-bottom:1.5rem">Ciberseguridad activa</p>
+          <ul class="feature-list" style="margin-bottom:1.5rem">
+            <li>Todo lo de Control +</li>
+            <li>Aislamiento de red (iptables/pfctl)</li>
+            <li>Detección de amenazas en tiempo real</li>
+            <li>Políticas de seguridad con firma RSA</li>
+            <li>Alertas y respuesta automatizada</li>
+            <li>Anti-tamper y protección del agente</li>
+            <li>Cifrado de disco verificado</li>
+          </ul>
+          <p style="font-size:0.8rem;color:#a0aec0">Para empresas que manejan datos sensibles y necesitan protección real.</p>
+        </div>
+
+        <!-- Compliance -->
+        <div class="card reveal" style="border-top:4px solid #8b5cf6;padding:2rem">
+          <h3 style="color:#8b5cf6;margin-bottom:0.5rem">SentriaSec Compliance</h3>
+          <p style="font-size:0.85rem;color:#718096;margin-bottom:1.5rem">Cumplimiento normativo</p>
+          <ul class="feature-list" style="margin-bottom:1.5rem">
+            <li>Todo lo de Protect +</li>
+            <li>Auditorías ISO 27001 automatizadas</li>
+            <li>Evaluación ENS y DORA</li>
+            <li>Escáner de vulnerabilidades (nmap, nikto)</li>
+            <li>Reconocimiento OSINT</li>
+            <li>Informes de cumplimiento PDF</li>
+            <li>Log de auditoría completo</li>
+          </ul>
+          <div class="compliance-badges" style="margin-bottom:1rem">
             <span class="badge-tag">ISO 27001</span>
             <span class="badge-tag">ENS</span>
             <span class="badge-tag">GDPR</span>
             <span class="badge-tag">DORA</span>
           </div>
+          <p style="font-size:0.8rem;color:#a0aec0">Para empresas que necesitan certificarse o pasar auditorías regulatorias.</p>
         </div>
+      </div>
+
+      <!-- Terminal demo -->
+      <div style="max-width:700px;margin:0 auto">
         <div class="terminal reveal">
           <div class="terminal-line"><span class="terminal-prompt">sentria-agent ~ scan</span></div>
           <div class="terminal-line">$ sentria scan --full --stealth</div>
-          <div class="terminal-line"><span class="terminal-prompt">[*]</span> Inicializando agente...</div>
+          <div class="terminal-line"><span class="terminal-prompt">[*]</span> Inicializando agente v2.4...</div>
           <div class="terminal-line"><span class="terminal-prompt">[*]</span> Escaneando 3 dispositivos activos</div>
           <div class="terminal-line"><span class="terminal-success">[+]</span> Puerto 443/tcp &#8212; HTTPS (seguro)</div>
           <div class="terminal-line"><span class="terminal-alert">[!]</span> Puerto 8080/tcp &#8212; proxy abierto detectado</div>
           <div class="terminal-line"><span class="terminal-success">[+]</span> Firewall rules &#8212; 12/12 validadas</div>
-          <div class="terminal-line"><span class="terminal-success">[+]</span> SSL/TLS &#8212; A+ rating confirmado</div>
-          <div class="terminal-line"><span class="terminal-prompt">[*]</span> Generando informe de auditoría...</div>
-          <div class="terminal-line"><span class="terminal-success">[✔]</span> Scan completado &#8212; 1 alerta, 0 críticos</div>
+          <div class="terminal-line"><span class="terminal-success">[+]</span> ISO 27001 &#8212; 36% cumplimiento</div>
+          <div class="terminal-line"><span class="terminal-prompt">[*]</span> Generando informe PDF...</div>
+          <div class="terminal-line"><span class="terminal-success">[&#10004;]</span> Scan completado &#8212; 1 alerta, 0 cr&#237;ticos</div>
           <div class="terminal-line">$ <span style="animation: blink 1s infinite;">_</span></div>
         </div>
       </div>
@@ -1058,8 +1106,20 @@
         </ul>
       </div>
     </div>
+    <div class="footer-column">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="legal/aviso-legal.html">Aviso Legal</a></li>
+          <li><a href="legal/privacidad.html">Pol&#237;tica de Privacidad</a></li>
+          <li><a href="legal/cookies.html">Pol&#237;tica de Cookies</a></li>
+          <li><a href="legal/terminos.html">T&#233;rminos y Condiciones</a></li>
+        </ul>
+      </div>
     <div class="footer-bottom">
-      2026 PROJECT SAU &#183; DEFENSE SYSTEMS
+      &#169; 2026 PROJECT SAU &#183; DEFENSE SYSTEMS &nbsp;|&nbsp;
+      <a href="legal/aviso-legal.html" style="color:#94a3b8">Aviso Legal</a> &nbsp;|&nbsp;
+      <a href="legal/privacidad.html" style="color:#94a3b8">Privacidad</a> &nbsp;|&nbsp;
+      <a href="legal/cookies.html" style="color:#94a3b8">Cookies</a>
     </div>
   </footer>
 
