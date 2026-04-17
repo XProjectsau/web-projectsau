@@ -3,251 +3,269 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Project SAU</title>
+  <title>Project SAU | Infraestructura y Defensa Digital</title>
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
   <meta name="description" content="Project SAU — Infraestructura y Defensa Digital">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body {
-      width: 100%;
-      height: 100%;
+      width: 100%; height: 100%;
       overflow: hidden;
       background: #000;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     }
-    canvas {
-      display: block;
+
+    #shader-bg {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 0;
     }
+
+    .overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+    }
+
+    .brand {
+      text-align: center;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 1.2s ease forwards;
+      animation-delay: 0.5s;
+    }
+
+    .brand-name {
+      font-size: clamp(2.4rem, 6vw, 5rem);
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      text-shadow: 0 0 60px rgba(100, 180, 255, 0.3), 0 0 120px rgba(80, 140, 255, 0.15);
+      line-height: 1.1;
+    }
+
+    .brand-sub {
+      font-size: clamp(0.7rem, 1.4vw, 1rem);
+      font-weight: 400;
+      color: rgba(255, 255, 255, 0.5);
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      margin-top: 12px;
+    }
+
+    .divider {
+      width: 60px;
+      height: 1.5px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+      margin: 24px auto 0;
+    }
+
     .enter-btn {
+      margin-top: 48px;
+      opacity: 0;
+      transform: translateY(15px);
+      animation: fadeUp 1s ease forwards;
+      animation-delay: 1.8s;
+      pointer-events: auto;
+    }
+
+    .enter-btn a {
+      display: inline-block;
+      padding: 14px 52px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      border: 1.5px solid rgba(255,255,255,0.3);
+      border-radius: 50px;
+      backdrop-filter: blur(12px);
+      background: rgba(255,255,255,0.05);
+      transition: all 0.4s ease;
+      animation: pulseGlow 3s ease-in-out infinite;
+    }
+
+    .enter-btn a:hover {
+      background: rgba(255,255,255,0.12);
+      border-color: rgba(255,255,255,0.6);
+      box-shadow: 0 0 40px rgba(100, 180, 255, 0.2);
+      transform: scale(1.06);
+    }
+
+    @keyframes fadeUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 8px rgba(100,180,255,0.05); }
+      50% { box-shadow: 0 0 24px rgba(100,180,255,0.15); }
+    }
+
+    /* Floating icon hints */
+    .floating-icons {
       position: fixed;
-      bottom: 12%;
+      bottom: 8%;
       left: 50%;
       transform: translateX(-50%);
       z-index: 10;
+      display: flex;
+      gap: 40px;
       opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.8s ease;
+      animation: fadeUp 1s ease forwards;
+      animation-delay: 2.8s;
     }
-    .enter-btn.visible {
-      opacity: 1;
-      pointer-events: auto;
+
+    .floating-icons svg {
+      width: 20px; height: 20px;
+      stroke: rgba(255,255,255,0.25);
+      stroke-width: 1.5;
+      fill: none;
+      animation: iconFloat 4s ease-in-out infinite;
     }
-    .enter-btn a {
-      display: inline-block;
-      padding: 14px 48px;
-      color: #fff;
-      text-decoration: none;
-      font-size: 15px;
-      font-weight: 600;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      border: 1.5px solid rgba(255,255,255,0.4);
-      border-radius: 50px;
-      backdrop-filter: blur(8px);
-      background: rgba(255,255,255,0.06);
-      transition: all 0.35s ease;
-      animation: pulse-glow 2.5s ease-in-out infinite;
-    }
-    .enter-btn a:hover {
-      background: rgba(255,255,255,0.15);
-      border-color: rgba(255,255,255,0.7);
-      box-shadow: 0 0 30px rgba(255,255,255,0.15);
-      transform: scale(1.05);
-    }
-    @keyframes pulse-glow {
-      0%, 100% { box-shadow: 0 0 10px rgba(255,255,255,0.05); }
-      50% { box-shadow: 0 0 25px rgba(255,255,255,0.12); }
+
+    .floating-icons svg:nth-child(2) { animation-delay: 0.5s; }
+    .floating-icons svg:nth-child(3) { animation-delay: 1s; }
+
+    @keyframes iconFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
     }
   </style>
 </head>
 <body>
-  <canvas id="spiral"></canvas>
-  <div class="enter-btn" id="enterBtn">
-    <a href="https://sentriasec.com">Enter</a>
+
+  <div id="shader-bg"></div>
+
+  <div class="overlay">
+    <div class="brand">
+      <div class="brand-name">Project SAU</div>
+      <div class="brand-sub">Infraestructura y Defensa Digital</div>
+      <div class="divider"></div>
+    </div>
+    <div class="enter-btn">
+      <a href="https://sentriasec.com">Entrar</a>
+    </div>
+  </div>
+
+  <!-- Floating icons: Shield, Brain, Rocket -->
+  <div class="floating-icons">
+    <svg viewBox="0 0 24 24"><path d="M12 2L2 7v5c0 5.55 3.84 10.74 10 12 6.16-1.26 10-6.45 10-12V7L12 2z"/></svg>
+    <svg viewBox="0 0 24 24"><path d="M12 2a9 9 0 0 0-9 9c0 3.87 2.13 7.24 5.25 9h.02A9.96 9.96 0 0 0 12 21a9.96 9.96 0 0 0 3.73-1H15.75A9.93 9.93 0 0 0 21 11a9 9 0 0 0-9-9z"/><path d="M9 10h.01M15 10h.01M9.5 15a3.5 3.5 0 0 0 5 0"/></svg>
+    <svg viewBox="0 0 24 24"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg>
   </div>
 
   <script>
   (function() {
-    // --- Seeded random ---
-    function mulberry32(a) {
-      return function() {
-        a |= 0; a = a + 0x6D2B79F5 | 0;
-        var t = Math.imul(a ^ a >>> 15, 1 | a);
-        t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
-        return ((t ^ t >>> 14) >>> 0) / 4294967296;
-      };
-    }
-    var rng = mulberry32(42);
+    var container = document.getElementById('shader-bg');
 
-    // --- Vec helpers ---
-    function v2(x, y) { return { x: x, y: y }; }
-    function v3(x, y, z) { return { x: x, y: y, z: z }; }
-    function v2lerp(a, b, t) { return v2(a.x + (b.x - a.x) * t, a.y + (b.y - a.y) * t); }
+    var scene = new THREE.Scene();
+    var camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+    var renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    container.appendChild(renderer.domElement);
 
-    // --- Canvas setup ---
-    var canvas = document.getElementById('spiral');
-    var ctx = canvas.getContext('2d');
-    var W, H, dpr;
-
-    function resize() {
-      dpr = window.devicePixelRatio || 1;
-      W = window.innerWidth;
-      H = window.innerHeight;
-      canvas.width = W * dpr;
-      canvas.height = H * dpr;
-      canvas.style.width = W + 'px';
-      canvas.style.height = H + 'px';
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    }
-    resize();
-    window.addEventListener('resize', resize);
-
-    // --- Config ---
-    var NUM_STARS = 5000;
-    var SPIRAL_TURNS = 6;
-    var SPIRAL_RADIUS = Math.min(W, H) * 0.42;
-    var TRAIL_LENGTH = 6;
-    var BASE_SPEED = 0.00012;
-    var FOV = 800;
-    var CENTER_X = W / 2;
-    var CENTER_Y = H / 2;
-
-    // --- 3D project ---
-    function project(p3) {
-      var scale = FOV / (FOV + p3.z);
-      return {
-        x: CENTER_X + p3.x * scale,
-        y: CENTER_Y + p3.y * scale,
-        scale: scale
-      };
-    }
-
-    // --- Spiral path ---
-    function spiralPoint(t) {
-      var angle = t * SPIRAL_TURNS * Math.PI * 2;
-      var r = t * SPIRAL_RADIUS;
-      return v3(
-        Math.cos(angle) * r,
-        Math.sin(angle) * r,
-        (t - 0.5) * 400
-      );
-    }
-
-    // --- Star class ---
-    function Star(idx) {
-      this.t = rng();
-      this.speed = BASE_SPEED * (0.5 + rng() * 1.0);
-      this.offset = v2((rng() - 0.5) * 30, (rng() - 0.5) * 30);
-      this.size = 0.5 + rng() * 1.8;
-      this.brightness = 0.3 + rng() * 0.7;
-      this.trail = [];
-    }
-
-    Star.prototype.update = function(dt) {
-      this.t += this.speed * dt;
-      if (this.t > 1) this.t -= 1;
-
-      var p = spiralPoint(this.t);
-      p.x += this.offset.x;
-      p.y += this.offset.y;
-
-      var projected = project(p);
-      this.screen = projected;
-
-      this.trail.unshift({ x: projected.x, y: projected.y, s: projected.scale });
-      if (this.trail.length > TRAIL_LENGTH) this.trail.pop();
-    };
-
-    Star.prototype.render = function(ctx) {
-      if (!this.screen) return;
-      var s = this.screen.scale;
-      var alpha = this.brightness * Math.min(s * 1.2, 1);
-      var r = this.size * s;
-
-      // Trail
-      if (this.trail.length > 1) {
-        for (var i = 1; i < this.trail.length; i++) {
-          var ta = alpha * (1 - i / this.trail.length) * 0.3;
-          if (ta < 0.01) continue;
-          ctx.beginPath();
-          ctx.moveTo(this.trail[i - 1].x, this.trail[i - 1].y);
-          ctx.lineTo(this.trail[i].x, this.trail[i].y);
-          ctx.strokeStyle = 'rgba(255,255,255,' + ta.toFixed(3) + ')';
-          ctx.lineWidth = r * 0.5 * (1 - i / this.trail.length);
-          ctx.stroke();
-        }
-      }
-
-      // Dot
-      if (r > 0.15) {
-        ctx.beginPath();
-        ctx.arc(this.screen.x, this.screen.y, r, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(255,255,255,' + alpha.toFixed(3) + ')';
-        ctx.fill();
-      }
-    };
-
-    // --- Generate stars ---
-    var stars = [];
-    for (var i = 0; i < NUM_STARS; i++) {
-      stars.push(new Star(i));
-    }
-
-    // --- Animation loop ---
-    var lastTime = 0;
-    var progress = { value: 0 };
-
-    // GSAP ramp-up
-    gsap.to(progress, {
-      value: 1,
-      duration: 3,
-      ease: 'power2.inOut'
+    var material = new THREE.ShaderMaterial({
+      uniforms: {
+        iTime: { value: 0 },
+        iResolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) }
+      },
+      vertexShader: [
+        'void main() {',
+        '  gl_Position = vec4(position, 1.0);',
+        '}'
+      ].join('\n'),
+      fragmentShader: [
+        'uniform float iTime;',
+        'uniform vec2 iResolution;',
+        '#define NUM_OCTAVES 3',
+        '',
+        'float rand(vec2 n) {',
+        '  return fract(sin(dot(n, vec2(12.9898, 4.1414))) * 43758.5453);',
+        '}',
+        '',
+        'float noise(vec2 p) {',
+        '  vec2 ip = floor(p);',
+        '  vec2 u = fract(p);',
+        '  u = u*u*(3.0-2.0*u);',
+        '  float res = mix(',
+        '    mix(rand(ip), rand(ip + vec2(1.0, 0.0)), u.x),',
+        '    mix(rand(ip + vec2(0.0, 1.0)), rand(ip + vec2(1.0, 1.0)), u.x), u.y);',
+        '  return res * res;',
+        '}',
+        '',
+        'float fbm(vec2 x) {',
+        '  float v = 0.0;',
+        '  float a = 0.3;',
+        '  vec2 shift = vec2(100);',
+        '  mat2 rot = mat2(cos(0.5), sin(0.5), -sin(0.5), cos(0.5));',
+        '  for (int i = 0; i < NUM_OCTAVES; ++i) {',
+        '    v += a * noise(x);',
+        '    x = rot * x * 2.0 + shift;',
+        '    a *= 0.4;',
+        '  }',
+        '  return v;',
+        '}',
+        '',
+        'void main() {',
+        '  vec2 shake = vec2(sin(iTime * 1.2) * 0.005, cos(iTime * 2.1) * 0.005);',
+        '  vec2 p = ((gl_FragCoord.xy + shake * iResolution.xy) - iResolution.xy * 0.5) / iResolution.y * mat2(6.0, -4.0, 4.0, 6.0);',
+        '  vec2 v;',
+        '  vec4 o = vec4(0.0);',
+        '  float f = 2.0 + fbm(p + vec2(iTime * 5.0, 0.0)) * 0.5;',
+        '  for (float i = 0.0; i < 35.0; i++) {',
+        '    v = p + cos(i * i + (iTime + p.x * 0.08) * 0.025 + i * vec2(13.0, 11.0)) * 3.5 + vec2(sin(iTime * 3.0 + i) * 0.003, cos(iTime * 3.5 - i) * 0.003);',
+        '    float tailNoise = fbm(v + vec2(iTime * 0.5, i)) * 0.3 * (1.0 - (i / 35.0));',
+        '    vec4 auroraColors = vec4(',
+        '      0.1 + 0.3 * sin(i * 0.2 + iTime * 0.4),',
+        '      0.3 + 0.5 * cos(i * 0.3 + iTime * 0.5),',
+        '      0.7 + 0.3 * sin(i * 0.4 + iTime * 0.3),',
+        '      1.0',
+        '    );',
+        '    vec4 currentContribution = auroraColors * exp(sin(i * i + iTime * 0.8)) / length(max(v, vec2(v.x * f * 0.015, v.y * 1.5)));',
+        '    float thinnessFactor = smoothstep(0.0, 1.0, i / 35.0) * 0.6;',
+        '    o += currentContribution * (1.0 + tailNoise * 0.8) * thinnessFactor;',
+        '  }',
+        '  o = tanh(pow(o / 100.0, vec4(1.6)));',
+        '  gl_FragColor = o * 1.5;',
+        '}'
+      ].join('\n')
     });
 
-    function loop(time) {
-      requestAnimationFrame(loop);
-      if (!lastTime) { lastTime = time; return; }
-      var rawDt = time - lastTime;
-      lastTime = time;
-      var dt = rawDt * progress.value;
+    var geometry = new THREE.PlaneGeometry(2, 2);
+    var mesh = new THREE.Mesh(geometry, material);
+    scene.add(mesh);
 
-      // Recalc center on resize
-      CENTER_X = window.innerWidth / 2;
-      CENTER_Y = window.innerHeight / 2;
-      SPIRAL_RADIUS = Math.min(window.innerWidth, window.innerHeight) * 0.42;
-
-      // Fade trail bg
-      ctx.fillStyle = 'rgba(0,0,0,0.15)';
-      ctx.fillRect(0, 0, W, H);
-
-      // Update & render
-      for (var i = 0; i < stars.length; i++) {
-        stars[i].update(dt);
-      }
-      // Sort by z (back to front) — use scale as proxy
-      stars.sort(function(a, b) {
-        return (a.screen ? a.screen.scale : 0) - (b.screen ? b.screen.scale : 0);
-      });
-      for (var i = 0; i < stars.length; i++) {
-        stars[i].render(ctx);
-      }
+    function animate() {
+      material.uniforms.iTime.value += 0.016;
+      renderer.render(scene, camera);
+      requestAnimationFrame(animate);
     }
+    animate();
 
-    requestAnimationFrame(loop);
-
-    // Show enter button after 2s
-    setTimeout(function() {
-      document.getElementById('enterBtn').classList.add('visible');
-    }, 2000);
+    window.addEventListener('resize', function() {
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      material.uniforms.iResolution.value.set(window.innerWidth, window.innerHeight);
+    });
   })();
   </script>
 </body>
