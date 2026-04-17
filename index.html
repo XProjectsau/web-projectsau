@@ -3,22 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Project SAU | Infraestructura y Defensa Digital</title>
+  <title>Project SAU | Innovación en Software de Seguridad</title>
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
-  <meta name="description" content="Project SAU — Ciberseguridad, Redes e Infraestructura Digital">
+  <meta name="description" content="Project SAU — Empresa de desarrollo de software especializado en ciberseguridad, redes e infraestructura digital.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    html {
-      scroll-behavior: smooth;
-    }
+    html { scroll-behavior: smooth; }
 
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -28,7 +25,7 @@
       overflow-x: hidden;
     }
 
-    /* ======= SHADER BACKGROUND ======= */
+    /* ======= SHADER ======= */
     #shader-bg {
       position: fixed;
       top: 0; left: 0;
@@ -36,709 +33,466 @@
       z-index: 0;
     }
 
-    /* ======= HERO (fullscreen over shader) ======= */
+    /* ======= HERO ======= */
     .hero {
-      position: relative;
-      z-index: 10;
+      position: relative; z-index: 10;
       width: 100%; height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
       text-align: center;
     }
 
     .brand {
-      opacity: 0;
-      transform: translateY(20px);
+      opacity: 0; transform: translateY(20px);
       animation: fadeUp 1.2s ease forwards 0.5s;
     }
 
     .brand-name {
-      font-size: clamp(2.4rem, 6vw, 5rem);
-      font-weight: 800;
-      color: #fff;
-      letter-spacing: 6px;
-      text-transform: uppercase;
+      font-size: clamp(2.4rem, 6vw, 4.5rem);
+      font-weight: 800; color: #fff;
+      letter-spacing: 6px; text-transform: uppercase;
       text-shadow: 0 0 60px rgba(100,180,255,0.3), 0 0 120px rgba(80,140,255,0.15);
       line-height: 1.1;
     }
 
     .brand-sub {
-      font-size: clamp(0.7rem, 1.4vw, 1rem);
+      font-size: clamp(0.7rem, 1.3vw, 0.95rem);
       font-weight: 400;
-      color: rgba(255,255,255,0.5);
-      letter-spacing: 4px;
-      text-transform: uppercase;
-      margin-top: 12px;
+      color: rgba(255,255,255,0.45);
+      letter-spacing: 3px; text-transform: uppercase;
+      margin-top: 14px;
     }
 
     .hero-divider {
-      width: 60px; height: 1.5px;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-      margin: 24px auto 0;
+      width: 50px; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent);
+      margin: 28px auto 0;
     }
 
     .hero-buttons {
-      margin-top: 48px;
-      display: flex;
-      gap: 16px;
-      flex-wrap: wrap;
-      justify-content: center;
-      opacity: 0;
-      transform: translateY(15px);
+      margin-top: 44px;
+      display: flex; gap: 14px; flex-wrap: wrap; justify-content: center;
+      opacity: 0; transform: translateY(15px);
       animation: fadeUp 1s ease forwards 1.8s;
     }
 
     .scroll-hint {
-      position: absolute;
-      bottom: 32px;
-      left: 50%;
+      position: absolute; bottom: 32px; left: 50%;
       transform: translateX(-50%);
-      opacity: 0;
-      animation: fadeUp 1s ease forwards 2.8s;
+      opacity: 0; animation: fadeUp 1s ease forwards 2.8s;
     }
 
     .scroll-hint svg {
-      width: 24px; height: 24px;
-      stroke: rgba(255,255,255,0.3);
-      stroke-width: 1.5;
-      fill: none;
+      width: 22px; height: 22px;
+      stroke: rgba(255,255,255,0.25); stroke-width: 1.5; fill: none;
       animation: bounce 2s ease-in-out infinite;
     }
 
-    /* ======= CONTENT (scrolls over shader) ======= */
-    .content {
-      position: relative;
-      z-index: 10;
-      background: transparent;
-    }
+    /* ======= CONTENT ======= */
+    .content { position: relative; z-index: 10; }
 
-    /* Dark glass panels */
     .section-dark {
       background: rgba(8,10,18,0.55);
-      backdrop-filter: blur(30px);
-      -webkit-backdrop-filter: blur(30px);
+      backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
       border-top: 1px solid rgba(100,180,255,0.08);
     }
 
     .section-darker {
       background: rgba(4,6,14,0.6);
-      backdrop-filter: blur(30px);
-      -webkit-backdrop-filter: blur(30px);
+      backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
       border-top: 1px solid rgba(100,180,255,0.06);
     }
 
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 2rem;
-    }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
 
     /* ======= NAVBAR ======= */
     nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      padding: 1rem 2rem;
-      z-index: 100;
-      transition: all 0.4s ease;
-      background: transparent;
+      position: fixed; top: 0; left: 0; right: 0;
+      padding: 1rem 2rem; z-index: 100;
+      transition: all 0.4s ease; background: transparent;
     }
 
     nav.scrolled {
-      background: rgba(8,10,18,0.85);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      background: rgba(8,10,18,0.88);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
       border-bottom: 1px solid rgba(100,180,255,0.08);
       padding: 0.6rem 2rem;
     }
 
     .nav-content {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      max-width: 1100px; margin: 0 auto;
+      display: flex; justify-content: space-between; align-items: center;
     }
 
     .nav-logo {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      font-size: 1rem;
-      font-weight: 800;
-      color: #fff;
-      text-decoration: none;
-      letter-spacing: 2px;
-      text-transform: uppercase;
+      display: flex; align-items: center; gap: 0.6rem;
+      font-size: 0.9rem; font-weight: 800; color: #fff;
+      text-decoration: none; letter-spacing: 2px; text-transform: uppercase;
     }
 
-    .nav-logo svg {
-      width: 26px; height: 26px;
-    }
+    .nav-logo svg { width: 24px; height: 24px; }
 
-    .nav-links {
-      display: flex;
-      gap: 2.5rem;
-      list-style: none;
-    }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
 
     .nav-links a {
-      text-decoration: none;
-      color: rgba(255,255,255,0.6);
-      font-size: 0.85rem;
-      font-weight: 500;
-      transition: color 0.3s ease;
-      letter-spacing: 0.5px;
+      text-decoration: none; color: rgba(255,255,255,0.5);
+      font-size: 0.82rem; font-weight: 500;
+      transition: color 0.3s ease; letter-spacing: 0.5px;
     }
 
-    .nav-links a:hover {
-      color: #64b5f6;
-    }
+    .nav-links a:hover { color: #64b5f6; }
 
     .nav-cta {
-      padding: 0.55rem 1.6rem;
-      background: rgba(100,180,255,0.12);
-      border: 1px solid rgba(100,180,255,0.25);
-      color: #64b5f6;
-      text-decoration: none;
-      border-radius: 8px;
-      font-weight: 600;
-      font-size: 0.85rem;
-      transition: all 0.3s ease;
-      letter-spacing: 0.5px;
+      padding: 0.5rem 1.4rem;
+      background: rgba(100,180,255,0.1);
+      border: 1px solid rgba(100,180,255,0.2);
+      color: #64b5f6; text-decoration: none;
+      border-radius: 8px; font-weight: 600; font-size: 0.82rem;
+      transition: all 0.3s ease; letter-spacing: 0.5px;
     }
 
     .nav-cta:hover {
-      background: rgba(100,180,255,0.2);
-      border-color: rgba(100,180,255,0.4);
-      box-shadow: 0 0 20px rgba(100,180,255,0.1);
+      background: rgba(100,180,255,0.18);
+      border-color: rgba(100,180,255,0.35);
     }
 
-    /* ======= SHARED STYLES ======= */
+    /* ======= SHARED ======= */
     section { padding: 6rem 2rem; }
 
-    .section-header {
-      text-align: center;
-      margin-bottom: 4rem;
-    }
+    .section-header { text-align: center; margin-bottom: 3.5rem; }
 
     .section-header h2 {
-      font-size: 2.6rem;
-      font-weight: 800;
-      color: #fff;
-      letter-spacing: -0.5px;
-      margin-bottom: 0.8rem;
+      font-size: 2.4rem; font-weight: 800; color: #fff;
+      letter-spacing: -0.5px; margin-bottom: 0.8rem;
     }
 
     .section-header .subtitle {
-      font-size: 0.9rem;
-      color: #64b5f6;
-      font-weight: 600;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      margin-bottom: 1rem;
+      font-size: 0.8rem; color: #64b5f6; font-weight: 600;
+      letter-spacing: 2px; text-transform: uppercase; margin-bottom: 1rem;
     }
 
     .section-header p {
-      font-size: 1rem;
-      color: rgba(255,255,255,0.45);
-      max-width: 600px;
-      margin: 0 auto;
-      line-height: 1.7;
+      font-size: 0.95rem; color: rgba(255,255,255,0.4);
+      max-width: 580px; margin: 0 auto; line-height: 1.7;
     }
 
     /* ======= BUTTONS ======= */
     .btn {
-      display: inline-block;
-      padding: 13px 36px;
-      border: none;
-      border-radius: 50px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.35s ease;
-      text-decoration: none;
-      letter-spacing: 2px;
-      text-transform: uppercase;
+      display: inline-block; padding: 12px 34px; border: none;
+      border-radius: 50px; font-size: 0.82rem; font-weight: 600;
+      cursor: pointer; transition: all 0.35s ease; text-decoration: none;
+      letter-spacing: 2px; text-transform: uppercase;
     }
 
     .btn-primary {
-      background: rgba(100,180,255,0.15);
-      border: 1.5px solid rgba(100,180,255,0.35);
-      color: #fff;
-      backdrop-filter: blur(8px);
+      background: rgba(100,180,255,0.12);
+      border: 1.5px solid rgba(100,180,255,0.3);
+      color: #fff; backdrop-filter: blur(8px);
     }
 
     .btn-primary:hover {
-      background: rgba(100,180,255,0.25);
+      background: rgba(100,180,255,0.22);
       border-color: rgba(100,180,255,0.5);
-      box-shadow: 0 0 30px rgba(100,180,255,0.15);
-      transform: translateY(-3px);
+      box-shadow: 0 0 28px rgba(100,180,255,0.12);
+      transform: translateY(-2px);
     }
 
     .btn-outline {
       background: transparent;
-      border: 1.5px solid rgba(255,255,255,0.2);
-      color: rgba(255,255,255,0.7);
-      backdrop-filter: blur(8px);
+      border: 1.5px solid rgba(255,255,255,0.18);
+      color: rgba(255,255,255,0.6); backdrop-filter: blur(8px);
     }
 
     .btn-outline:hover {
-      border-color: rgba(255,255,255,0.4);
-      color: #fff;
-      transform: translateY(-3px);
+      border-color: rgba(255,255,255,0.35); color: #fff;
+      transform: translateY(-2px);
     }
 
-    /* ======= TRUST BAR ======= */
-    .trust-bar { padding: 4rem 2rem; }
+    /* ======= INTRO STRIP ======= */
+    .intro-strip { padding: 4rem 2rem; }
 
-    .trust-items {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1.5rem;
-      max-width: 1200px;
-      margin: 0 auto;
+    .intro-items {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem; max-width: 1100px; margin: 0 auto;
     }
 
-    .trust-item {
+    .intro-item {
       background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(100,180,255,0.1);
-      border-radius: 14px;
-      padding: 2rem;
-      text-align: center;
+      border: 1px solid rgba(100,180,255,0.08);
+      border-radius: 14px; padding: 2rem; text-align: center;
       transition: all 0.3s ease;
     }
 
-    .trust-item:hover {
-      border-color: rgba(100,180,255,0.25);
-      background: rgba(100,180,255,0.05);
-      transform: translateY(-4px);
+    .intro-item:hover {
+      border-color: rgba(100,180,255,0.2);
+      transform: translateY(-3px);
     }
 
-    .trust-item h3 {
-      font-size: 1.8rem;
-      font-weight: 800;
-      color: #64b5f6;
+    .intro-item h3 {
+      font-size: 1.5rem; font-weight: 800; color: #64b5f6;
       margin-bottom: 0.4rem;
     }
 
-    .trust-item p {
-      font-size: 0.85rem;
-      color: rgba(255,255,255,0.45);
-      font-weight: 500;
+    .intro-item p {
+      font-size: 0.82rem; color: rgba(255,255,255,0.4); font-weight: 500;
     }
 
     /* ======= GLASS CARDS ======= */
     .card-grid-3 {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 2rem;
-      max-width: 1200px;
-      margin: 0 auto;
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1.8rem; max-width: 1100px; margin: 0 auto;
+    }
+
+    .card-grid-2 {
+      display: grid; grid-template-columns: repeat(2, 1fr);
+      gap: 1.8rem; max-width: 800px; margin: 0 auto;
     }
 
     .glass-card {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(100,180,255,0.12);
-      border-radius: 16px;
-      padding: 2.5rem;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(100,180,255,0.1);
+      border-radius: 14px; padding: 2.2rem;
       transition: all 0.35s ease;
-      position: relative;
-      overflow: hidden;
+      position: relative; overflow: hidden;
     }
 
     .glass-card::before {
-      content: '';
-      position: absolute;
-      top: -40%; right: -40%;
-      width: 250px; height: 250px;
-      background: radial-gradient(circle, rgba(100,180,255,0.06) 0%, transparent 70%);
-      border-radius: 50%;
-      filter: blur(30px);
-      pointer-events: none;
+      content: ''; position: absolute; top: -40%; right: -40%;
+      width: 220px; height: 220px;
+      background: radial-gradient(circle, rgba(100,180,255,0.05) 0%, transparent 70%);
+      border-radius: 50%; filter: blur(30px); pointer-events: none;
     }
 
     .glass-card:hover {
-      border-color: rgba(100,180,255,0.25);
-      background: rgba(100,180,255,0.05);
-      transform: translateY(-6px);
-      box-shadow: 0 20px 60px rgba(100,180,255,0.08);
+      border-color: rgba(100,180,255,0.22);
+      transform: translateY(-4px);
+      box-shadow: 0 16px 50px rgba(100,180,255,0.06);
     }
 
     .glass-card .card-icon {
-      width: 52px; height: 52px;
-      background: rgba(100,180,255,0.1);
-      border: 1px solid rgba(100,180,255,0.2);
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 1.5rem;
+      width: 48px; height: 48px;
+      background: rgba(100,180,255,0.08);
+      border: 1px solid rgba(100,180,255,0.18);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 1.2rem;
     }
 
     .glass-card .card-icon svg {
-      width: 26px; height: 26px;
-      stroke: #64b5f6;
-      stroke-width: 1.5;
-      fill: none;
+      width: 24px; height: 24px;
+      stroke: #64b5f6; stroke-width: 1.5; fill: none;
     }
 
     .glass-card h3 {
-      font-size: 1.2rem;
-      font-weight: 700;
-      color: #fff;
-      margin-bottom: 0.8rem;
-      position: relative; z-index: 1;
+      font-size: 1.1rem; font-weight: 700; color: #fff;
+      margin-bottom: 0.6rem; position: relative; z-index: 1;
     }
 
     .glass-card p {
-      font-size: 0.9rem;
-      color: rgba(255,255,255,0.5);
-      line-height: 1.7;
-      position: relative; z-index: 1;
+      font-size: 0.85rem; color: rgba(255,255,255,0.45);
+      line-height: 1.7; position: relative; z-index: 1;
     }
 
-    /* ======= TIERS ======= */
-    .tier-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 2rem;
-      max-width: 1200px;
-      margin: 0 auto 4rem;
+    /* ======= PRODUCT HIGHLIGHT ======= */
+    .product-highlight {
+      max-width: 900px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 3rem; align-items: center;
     }
 
-    .tier-card {
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(100,180,255,0.1);
-      border-radius: 16px;
-      padding: 2.5rem;
-      transition: all 0.35s ease;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .tier-card::before {
-      content: '';
-      position: absolute;
-      top: -50%; right: -50%;
-      width: 300px; height: 300px;
-      background: radial-gradient(circle, rgba(100,180,255,0.06) 0%, transparent 70%);
-      border-radius: 50%;
-      filter: blur(40px);
-      pointer-events: none;
-    }
-
-    .tier-card.recommended {
-      border-color: rgba(76,175,80,0.3);
-      box-shadow: 0 0 40px rgba(76,175,80,0.08);
-    }
-
-    .tier-card:hover {
-      transform: translateY(-6px);
-      border-color: rgba(100,180,255,0.25);
-      box-shadow: 0 20px 60px rgba(100,180,255,0.08);
-    }
-
-    .tier-badge {
+    .product-info .product-badge {
       display: inline-block;
-      background: rgba(76,175,80,0.15);
-      border: 1px solid rgba(76,175,80,0.3);
-      color: #66bb6a;
-      font-size: 0.65rem;
-      font-weight: 800;
-      padding: 0.35rem 1rem;
-      border-radius: 8px;
-      margin-bottom: 1rem;
-      letter-spacing: 2px;
-      text-transform: uppercase;
+      padding: 0.4rem 1rem;
+      background: rgba(100,180,255,0.08);
+      border: 1px solid rgba(100,180,255,0.2);
+      border-radius: 6px; font-size: 0.7rem; font-weight: 700;
+      color: #64b5f6; letter-spacing: 1px; text-transform: uppercase;
+      margin-bottom: 1.2rem;
     }
 
-    .tier-card h3 {
-      font-size: 1.3rem;
-      font-weight: 800;
-      margin-bottom: 0.5rem;
-      position: relative; z-index: 1;
+    .product-info h3 {
+      font-size: 2rem; font-weight: 800; color: #fff;
+      margin-bottom: 0.8rem; letter-spacing: -0.3px;
     }
 
-    .tier-color-blue { color: #64b5f6; }
-    .tier-color-green { color: #66bb6a; }
-    .tier-color-purple { color: #b39ddb; }
-
-    .tier-subtitle {
-      font-size: 0.9rem;
-      color: rgba(255,255,255,0.4);
-      margin-bottom: 1.5rem;
-      font-weight: 500;
-      position: relative; z-index: 1;
+    .product-info .desc {
+      font-size: 0.92rem; color: rgba(255,255,255,0.45);
+      line-height: 1.8; margin-bottom: 1.5rem;
     }
 
-    .feature-list {
-      list-style: none;
-      margin-bottom: 1.5rem;
-      position: relative; z-index: 1;
+    .product-features {
+      list-style: none; margin-bottom: 1.8rem;
     }
 
-    .feature-list li {
-      padding: 0.6rem 0;
-      padding-left: 1.8rem;
-      position: relative;
-      color: rgba(255,255,255,0.6);
-      font-size: 0.9rem;
-      font-weight: 500;
+    .product-features li {
+      padding: 0.45rem 0; padding-left: 1.6rem; position: relative;
+      color: rgba(255,255,255,0.55); font-size: 0.85rem; font-weight: 500;
     }
 
-    .feature-list li::before {
-      content: '\2713';
-      position: absolute;
-      left: 0;
-      color: #66bb6a;
-      font-weight: bold;
-    }
-
-    .tier-description {
-      font-size: 0.82rem;
-      color: rgba(255,255,255,0.35);
-      line-height: 1.6;
-      position: relative; z-index: 1;
+    .product-features li::before {
+      content: '\2713'; position: absolute; left: 0;
+      color: #66bb6a; font-weight: bold; font-size: 0.9rem;
     }
 
     .compliance-badges {
-      display: flex;
-      gap: 0.6rem;
-      flex-wrap: wrap;
-      margin-bottom: 1rem;
-      position: relative; z-index: 1;
+      display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem;
     }
 
     .badge-tag {
-      padding: 0.4rem 0.9rem;
-      background: rgba(100,180,255,0.08);
-      border: 1px solid rgba(100,180,255,0.2);
-      border-radius: 8px;
-      font-size: 0.7rem;
-      font-weight: 700;
-      color: #64b5f6;
-      letter-spacing: 0.5px;
-    }
-
-    /* ======= TERMINAL ======= */
-    .terminal {
-      background: rgba(0,0,0,0.35);
+      padding: 0.35rem 0.8rem;
+      background: rgba(100,180,255,0.06);
       border: 1px solid rgba(100,180,255,0.15);
-      border-radius: 16px;
-      padding: 2rem;
-      font-family: 'Monaco', 'Courier New', monospace;
-      font-size: 0.82rem;
-      color: #94a3b8;
-      overflow-x: auto;
-      line-height: 1.9;
-      max-width: 700px;
-      margin: 0 auto;
-      backdrop-filter: blur(20px);
+      border-radius: 6px; font-size: 0.65rem; font-weight: 700;
+      color: rgba(100,180,255,0.7); letter-spacing: 0.5px;
     }
 
-    .terminal-line { margin-bottom: 0.4rem; }
-    .terminal-prompt { color: #66bb6a; font-weight: 600; }
-    .terminal-alert { color: #fdd835; }
-    .terminal-success { color: #66bb6a; }
+    .product-terminal {
+      background: rgba(0,0,0,0.3);
+      border: 1px solid rgba(100,180,255,0.12);
+      border-radius: 14px; padding: 1.8rem;
+      font-family: 'Monaco', 'Courier New', monospace;
+      font-size: 0.78rem; color: #94a3b8;
+      line-height: 1.9; backdrop-filter: blur(20px);
+    }
 
-    /* ======= METHODOLOGY STEPS ======= */
+    .t-line { margin-bottom: 0.3rem; }
+    .t-g { color: #66bb6a; font-weight: 600; }
+    .t-y { color: #fdd835; }
+
+    /* ======= PROCESS STEPS ======= */
     .steps-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 2rem;
-      max-width: 1200px;
-      margin: 0 auto;
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 1.8rem; max-width: 1100px; margin: 0 auto;
     }
 
     .step-card {
-      position: relative;
-      padding: 3rem 2rem 2rem;
+      position: relative; padding: 2.8rem 1.8rem 1.8rem;
       background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(100,180,255,0.1);
-      border-radius: 16px;
-      text-align: center;
+      border: 1px solid rgba(100,180,255,0.08);
+      border-radius: 14px; text-align: center;
       transition: all 0.35s ease;
-      overflow: hidden;
     }
 
     .step-number {
-      position: absolute;
-      top: -1px; left: 50%;
+      position: absolute; top: -1px; left: 50%;
       transform: translateX(-50%);
-      width: 44px; height: 44px;
-      background: rgba(100,180,255,0.12);
-      border: 1px solid rgba(100,180,255,0.25);
-      color: #64b5f6;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 800;
-      font-size: 1rem;
+      width: 40px; height: 40px;
+      background: rgba(100,180,255,0.1);
+      border: 1px solid rgba(100,180,255,0.2);
+      color: #64b5f6; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 0.9rem;
     }
 
     .step-card:hover {
-      border-color: rgba(100,180,255,0.25);
-      transform: translateY(-6px);
-      box-shadow: 0 20px 60px rgba(100,180,255,0.08);
+      border-color: rgba(100,180,255,0.2);
+      transform: translateY(-4px);
     }
 
     .step-card h3 {
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: #fff;
-      margin-bottom: 0.8rem;
-      margin-top: 0.5rem;
+      font-size: 1rem; font-weight: 700; color: #fff;
+      margin-bottom: 0.6rem; margin-top: 0.4rem;
     }
 
     .step-card p {
-      font-size: 0.85rem;
-      color: rgba(255,255,255,0.45);
-      line-height: 1.7;
+      font-size: 0.82rem; color: rgba(255,255,255,0.4); line-height: 1.7;
     }
 
     /* ======= CTA ======= */
     .cta-section {
-      padding: 7rem 2rem;
-      text-align: center;
+      padding: 6rem 2rem; text-align: center;
       background: rgba(6,8,16,0.5);
-      backdrop-filter: blur(30px);
-      -webkit-backdrop-filter: blur(30px);
+      backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
     }
 
     .cta-section h2 {
-      font-size: 2.6rem;
-      font-weight: 800;
-      color: #fff;
-      margin-bottom: 1.2rem;
-      letter-spacing: -0.5px;
+      font-size: 2.2rem; font-weight: 800; color: #fff;
+      margin-bottom: 1rem; letter-spacing: -0.3px;
     }
 
     .cta-section p {
-      font-size: 1rem;
-      color: rgba(255,255,255,0.45);
-      margin-bottom: 2.5rem;
-      max-width: 600px;
-      margin-left: auto;
-      margin-right: auto;
-      line-height: 1.8;
+      font-size: 0.95rem; color: rgba(255,255,255,0.4);
+      margin-bottom: 2rem; max-width: 550px;
+      margin-left: auto; margin-right: auto; line-height: 1.8;
     }
 
     .cta-buttons {
-      display: flex;
-      gap: 1.2rem;
-      justify-content: center;
-      flex-wrap: wrap;
+      display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
     }
 
     /* ======= FOOTER ======= */
     footer {
-      background: rgba(4,6,14,0.65);
-      backdrop-filter: blur(30px);
-      -webkit-backdrop-filter: blur(30px);
+      background: rgba(4,6,14,0.7);
+      backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
       border-top: 1px solid rgba(100,180,255,0.06);
-      color: rgba(255,255,255,0.4);
-      padding: 4rem 2rem 2rem;
+      color: rgba(255,255,255,0.35);
+      padding: 3.5rem 2rem 1.5rem;
     }
 
     .footer-content {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: 2fr 1.2fr 1.2fr 1.2fr 1fr;
-      gap: 2.5rem;
-      margin-bottom: 3rem;
+      max-width: 1100px; margin: 0 auto;
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 2rem; margin-bottom: 2.5rem;
     }
 
     .footer-brand h3 {
-      font-size: 1.1rem;
-      font-weight: 800;
-      color: #fff;
-      margin-bottom: 0.8rem;
-      letter-spacing: 2px;
+      font-size: 1rem; font-weight: 800; color: #fff;
+      margin-bottom: 0.6rem; letter-spacing: 2px;
     }
 
     .footer-brand p {
-      font-size: 0.82rem;
-      color: rgba(255,255,255,0.35);
-      line-height: 1.7;
+      font-size: 0.8rem; color: rgba(255,255,255,0.3); line-height: 1.7;
     }
 
     .footer-column h4 {
-      font-size: 0.85rem;
-      font-weight: 700;
-      color: rgba(255,255,255,0.7);
-      margin-bottom: 1.2rem;
-      letter-spacing: 0.5px;
+      font-size: 0.8rem; font-weight: 700;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 1rem; letter-spacing: 0.5px;
     }
 
     .footer-column ul { list-style: none; }
-
-    .footer-column ul li { margin-bottom: 0.7rem; }
+    .footer-column ul li { margin-bottom: 0.6rem; }
 
     .footer-column a {
-      color: rgba(255,255,255,0.35);
-      text-decoration: none;
-      font-size: 0.85rem;
-      transition: color 0.3s ease;
-      font-weight: 500;
+      color: rgba(255,255,255,0.3); text-decoration: none;
+      font-size: 0.8rem; transition: color 0.3s ease; font-weight: 500;
     }
 
     .footer-column a:hover { color: #64b5f6; }
 
     .footer-bottom {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding-top: 2rem;
-      border-top: 1px solid rgba(100,180,255,0.06);
-      text-align: center;
-      font-size: 0.8rem;
-      color: rgba(255,255,255,0.25);
+      max-width: 1100px; margin: 0 auto; padding-top: 1.5rem;
+      border-top: 1px solid rgba(100,180,255,0.05);
+      text-align: center; font-size: 0.75rem; color: rgba(255,255,255,0.2);
     }
 
     .footer-bottom a {
-      color: #64b5f6;
-      text-decoration: none;
+      color: rgba(100,180,255,0.5); text-decoration: none;
       transition: color 0.3s ease;
     }
 
-    .footer-bottom a:hover { color: #90caf9; }
+    .footer-bottom a:hover { color: #64b5f6; }
 
-    /* ======= REVEAL ANIMATION ======= */
+    /* ======= REVEAL ======= */
     .reveal {
-      opacity: 0;
-      transform: translateY(25px);
+      opacity: 0; transform: translateY(22px);
       transition: opacity 0.6s ease-out, transform 0.6s ease-out;
     }
 
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
 
     /* ======= KEYFRAMES ======= */
-    @keyframes fadeUp {
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes bounce {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(8px); }
-    }
-
-    @keyframes blink {
-      0%, 49% { opacity: 1; }
-      50%, 100% { opacity: 0; }
-    }
+    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+    @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(8px)} }
+    @keyframes blink { 0%,49%{opacity:1} 50%,100%{opacity:0} }
 
     /* ======= RESPONSIVE ======= */
     @media (max-width: 1024px) {
       .nav-links { gap: 1.8rem; }
-      .trust-items { grid-template-columns: repeat(2, 1fr); }
+      .intro-items { grid-template-columns: 1fr; }
       .card-grid-3 { grid-template-columns: 1fr; }
-      .tier-grid { grid-template-columns: 1fr; }
+      .card-grid-2 { grid-template-columns: 1fr; }
+      .product-highlight { grid-template-columns: 1fr; }
       .steps-grid { grid-template-columns: repeat(2, 1fr); }
       .footer-content { grid-template-columns: repeat(2, 1fr); }
     }
@@ -747,21 +501,19 @@
       nav { padding: 0.7rem 1rem; }
       .nav-links { display: none; }
       section { padding: 4rem 1.5rem; }
-      .section-header h2 { font-size: 2rem; }
-      .trust-items { grid-template-columns: 1fr; }
+      .section-header h2 { font-size: 1.8rem; }
       .steps-grid { grid-template-columns: 1fr; }
-      .cta-section h2 { font-size: 2rem; }
+      .cta-section h2 { font-size: 1.8rem; }
       .cta-buttons { flex-direction: column; align-items: center; }
-      .btn { width: 100%; max-width: 320px; text-align: center; }
+      .btn { width: 100%; max-width: 300px; text-align: center; }
       .footer-content { grid-template-columns: 1fr; }
       .hero-buttons { flex-direction: column; align-items: center; }
-      .hero-buttons .btn { width: 260px; }
+      .hero-buttons .btn { width: 240px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Shader background (fixed, behind everything) -->
   <div id="shader-bg"></div>
 
   <!-- Navbar -->
@@ -779,24 +531,25 @@
         Project SAU
       </a>
       <ul class="nav-links">
-        <li><a href="#servicios">Servicios</a></li>
-        <li><a href="#sentria">Sentria</a></li>
-        <li><a href="#pilares">Principios</a></li>
+        <li><a href="#nosotros">Nosotros</a></li>
+        <li><a href="#areas">Areas</a></li>
+        <li><a href="#sentria">SentriaSec</a></li>
         <li><a href="#proceso">Proceso</a></li>
+        <li><a href="#contacto">Contacto</a></li>
       </ul>
-      <a href="#contacto" class="nav-cta">Contactar</a>
+      <a href="#contacto" class="nav-cta">Hablemos</a>
     </div>
   </nav>
 
-  <!-- Hero (over shader) -->
+  <!-- Hero -->
   <section class="hero">
     <div class="brand">
       <div class="brand-name">Project SAU</div>
-      <div class="brand-sub">Infraestructura y Defensa Digital</div>
+      <div class="brand-sub">Software &middot; Seguridad &middot; Redes</div>
       <div class="hero-divider"></div>
     </div>
     <div class="hero-buttons">
-      <a href="https://app.sentriasec.com" class="btn btn-primary">Explorar Sentria</a>
+      <a href="#sentria" class="btn btn-primary">Nuestro producto</a>
       <a href="#contacto" class="btn btn-outline">Contactar</a>
     </div>
     <div class="scroll-hint">
@@ -804,236 +557,152 @@
     </div>
   </section>
 
-  <!-- Content sections -->
   <div class="content">
 
-    <!-- Trust Bar -->
-    <section class="trust-bar section-dark">
-      <div class="trust-items">
-        <div class="trust-item reveal">
-          <h3>99.9%</h3>
-          <p>Uptime garantizado</p>
-        </div>
-        <div class="trust-item reveal">
-          <h3>&lt;15m</h3>
-          <p>Tiempo de respuesta</p>
-        </div>
-        <div class="trust-item reveal">
-          <h3>24/7</h3>
-          <p>Monitorización activa</p>
-        </div>
-        <div class="trust-item reveal">
-          <h3>ISO</h3>
-          <p>27001 · ENS · GDPR</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Pillars -->
-    <section class="section-darker" id="pilares">
+    <!-- Intro strip -->
+    <section class="intro-strip section-dark" id="nosotros">
       <div class="container">
         <div class="section-header">
-          <div class="subtitle">La triada de la seguridad</div>
-          <h2>Principios fundamentales</h2>
-          <p>Cada decision se fundamenta en los tres pilares inamovibles de la seguridad de la información.</p>
+          <div class="subtitle">Quiénes somos</div>
+          <h2>Innovación aplicada a la seguridad</h2>
+          <p>Project SAU es una empresa de desarrollo de software especializado. Diseñamos productos propios que resuelven problemas reales en ciberseguridad, redes e infraestructura IT.</p>
         </div>
-        <div class="card-grid-3">
-          <div class="glass-card reveal">
-            <div class="card-icon">
-              <svg viewBox="0 0 24 24"><path d="M12 2L22 7V12C22 18 12 22 12 22C12 22 2 18 2 12V7L12 2Z"/></svg>
-            </div>
-            <h3>Confidencialidad</h3>
-            <p>Cifrado de extremo a extremo y control de acceso granular. Solo las personas autorizadas acceden a la información critica.</p>
+        <div class="intro-items">
+          <div class="intro-item reveal">
+            <h3>Producto propio</h3>
+            <p>Desarrollamos software desde cero, sin depender de terceros</p>
           </div>
-          <div class="glass-card reveal">
-            <div class="card-icon">
-              <svg viewBox="0 0 24 24"><path d="M9 12L11 14L15 10M21 12C21 16.97 16.97 21 12 21C7.03 21 3 16.97 3 12C3 7.03 7.03 3 12 3C16.97 3 21 7.03 21 12Z"/></svg>
-            </div>
-            <h3>Integridad</h3>
-            <p>Sistemas libres de manipulación. Verificamos continuamente que tus datos y configuraciones permanecen intactos.</p>
+          <div class="intro-item reveal">
+            <h3>Especialización</h3>
+            <p>Ciberseguridad, redes e infraestructura digital</p>
           </div>
-          <div class="glass-card reveal">
-            <div class="card-icon">
-              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
-            </div>
-            <h3>Disponibilidad</h3>
-            <p>Infraestructura 99.9% resiliente con redundancia activa y planes de recuperación ante desastres probados.</p>
+          <div class="intro-item reveal">
+            <h3>España + UE</h3>
+            <p>Cumplimiento normativo europeo: ENS, GDPR, DORA, NIS2</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Services -->
-    <section class="section-dark" id="servicios">
+    <!-- Areas de trabajo -->
+    <section class="section-darker" id="areas">
       <div class="container">
         <div class="section-header">
-          <div class="subtitle">Defensa en profundidad</div>
-          <h2>Servicios</h2>
-          <p>Cubrimos cada capa de tu infraestructura digital con soluciones especializadas.</p>
+          <div class="subtitle">Lineas de negocio</div>
+          <h2>Areas de actividad</h2>
+          <p>Cada producto que construimos nace de una necesidad real del mercado. Nos enfocamos en verticales donde la tecnologia puede marcar la diferencia.</p>
         </div>
         <div class="card-grid-3">
           <div class="glass-card reveal">
             <div class="card-icon">
-              <svg viewBox="0 0 24 24"><path d="M12 2L2 7V12C2 19.16 12 22 12 22C12 22 22 19.16 22 12V7L12 2Z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
             </div>
-            <h3>Auditoria Ofensiva</h3>
-            <p>Pentesting, red teaming y análisis de vulnerabilidades para descubrir tus debilidades antes que los atacantes.</p>
+            <h3>Ciberseguridad Endpoint</h3>
+            <p>Proteccion, monitorizacion y respuesta en tiempo real para equipos de empresa. Nuestro producto estrella: SentriaSec.</p>
           </div>
           <div class="glass-card reveal">
             <div class="card-icon">
-              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="3"/><circle cx="5" cy="19" r="3"/><circle cx="19" cy="19" r="3"/><path d="M12 8v4m-5.2 3.5L10 12.5m4 0l3.2 3"/></svg>
             </div>
-            <h3>Monitorización SOC</h3>
-            <p>Centro de operaciones de seguridad 24/7 con detección y respuesta a incidentes en tiempo real.</p>
+            <h3>Redes e Infraestructura</h3>
+            <p>Diseño, auditoria y gestion de redes corporativas. Proxima linea de producto en desarrollo.</p>
           </div>
           <div class="glass-card reveal">
             <div class="card-icon">
               <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6v6H9z"/></svg>
             </div>
             <h3>Cumplimiento Normativo</h3>
-            <p>Implementación y certificación ISO 27001, ENS, GDPR y DORA para el cumplimiento total.</p>
-          </div>
-          <div class="glass-card reveal">
-            <div class="card-icon">
-              <svg viewBox="0 0 24 24"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
-            </div>
-            <h3>Arquitectura de Redes</h3>
-            <p>Diseño seguro de infraestructuras de red, segmentación, firewalls y VPN corporativas.</p>
-          </div>
-          <div class="glass-card reveal">
-            <div class="card-icon">
-              <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
-            </div>
-            <h3>Respuesta a Incidentes</h3>
-            <p>Plan de acción inmediata ante brechas de seguridad, análisis forense y contención de daños.</p>
-          </div>
-          <div class="glass-card reveal">
-            <div class="card-icon">
-              <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 10 12 6.16-1.26 10-6.45 10-12V5L12 1M10 17l-4-4 1.41-1.41L10 14.17l6.59-6.58L18 9l-8 8z"/></svg>
-            </div>
-            <h3>Hardening & Bastionado</h3>
-            <p>Securización avanzada de servidores, endpoints y aplicaciones según benchmarks CIS.</p>
+            <p>Herramientas automatizadas para ISO 27001, ENS, DORA, NIS2 y RGPD integradas en nuestros productos.</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- SentriaSec -->
-    <section class="section-darker" id="sentria">
+    <!-- SentriaSec (producto estrella, pero como seccion de producto, no como clon de su web) -->
+    <section class="section-dark" id="sentria">
       <div class="container">
         <div class="section-header">
-          <div class="subtitle">Ciberseguridad + Soporte IT</div>
+          <div class="subtitle">Producto estrella</div>
           <h2>SentriaSec</h2>
-          <p>Agente multiplataforma, dashboard en tiempo real y cumplimiento normativo automatizado.</p>
+          <p>Plataforma de seguridad endpoint creada por Project SAU. Agente ligero, dashboard en tiempo real y cumplimiento normativo en un solo panel.</p>
         </div>
 
-        <div class="tier-grid">
-          <div class="tier-card reveal">
-            <h3 class="tier-color-blue">SentriaSec Control</h3>
-            <p class="tier-subtitle">Gestión IT centralizada</p>
-            <ul class="feature-list">
-              <li>Inventario de dispositivos</li>
-              <li>Control horario laboral</li>
-              <li>Gestión de periféricos USB</li>
-              <li>Terminal remoto</li>
-              <li>Sistema de tickets</li>
-              <li>Métricas en tiempo real</li>
-            </ul>
-            <p class="tier-description">Ideal para equipos que necesitan visibilidad y control de su parque informático.</p>
-          </div>
-
-          <div class="tier-card recommended reveal">
-            <div class="tier-badge">Recomendado</div>
-            <h3 class="tier-color-green">SentriaSec Protect</h3>
-            <p class="tier-subtitle">Ciberseguridad activa</p>
-            <ul class="feature-list">
-              <li>Todo lo de Control +</li>
-              <li>Aislamiento de red</li>
-              <li>Detección de amenazas en tiempo real</li>
-              <li>Políticas con firma RSA</li>
-              <li>Alertas y respuesta automatizada</li>
-              <li>Anti-tamper y protección del agente</li>
-              <li>Cifrado de disco verificado</li>
-            </ul>
-            <p class="tier-description">Para empresas que manejan datos sensibles y necesitan protección real.</p>
-          </div>
-
-          <div class="tier-card reveal">
-            <h3 class="tier-color-purple">SentriaSec Compliance</h3>
-            <p class="tier-subtitle">Cumplimiento normativo</p>
-            <ul class="feature-list">
-              <li>Todo lo de Protect +</li>
-              <li>Auditorías ISO 27001 automatizadas</li>
-              <li>Evaluación ENS y DORA</li>
-              <li>Escáner de vulnerabilidades</li>
-              <li>Reconocimiento OSINT</li>
-              <li>Informes de cumplimiento PDF</li>
-              <li>Log de auditoría completo</li>
+        <div class="product-highlight reveal">
+          <div class="product-info">
+            <div class="product-badge">En produccion</div>
+            <h3>Proteccion endpoint real</h3>
+            <p class="desc">SentriaSec monitoriza, detecta y responde a amenazas en cada equipo de tu empresa. Un agente ligero, un dashboard centralizado y cumplimiento normativo integrado.</p>
+            <ul class="product-features">
+              <li>Monitorizacion y respuesta en tiempo real</li>
+              <li>Aislamiento y bloqueo remoto de equipos</li>
+              <li>Proteccion avanzada contra manipulacion</li>
+              <li>Deteccion inteligente de amenazas</li>
+              <li>Cumplimiento normativo automatizado</li>
+              <li>Dashboard centralizado multi-organizacion</li>
             </ul>
             <div class="compliance-badges">
               <span class="badge-tag">ISO 27001</span>
               <span class="badge-tag">ENS</span>
               <span class="badge-tag">GDPR</span>
               <span class="badge-tag">DORA</span>
+              <span class="badge-tag">NIS2</span>
             </div>
-            <p class="tier-description">Para empresas que necesitan certificarse o pasar auditorías regulatorias.</p>
+            <a href="https://sentriasec.com" class="btn btn-primary" style="margin-top:0.5rem;">Ir a SentriaSec</a>
           </div>
-        </div>
-
-        <div class="terminal reveal">
-          <div class="terminal-line"><span class="terminal-prompt">sentria-agent ~</span> scan --full --stealth</div>
-          <div class="terminal-line"><span class="terminal-prompt">[*]</span> Inicializando agente v3.8...</div>
-          <div class="terminal-line"><span class="terminal-prompt">[*]</span> Escaneando 3 dispositivos activos</div>
-          <div class="terminal-line"><span class="terminal-success">[+]</span> Puerto 443/tcp — HTTPS (seguro)</div>
-          <div class="terminal-line"><span class="terminal-alert">[!]</span> Puerto 8080/tcp — proxy abierto detectado</div>
-          <div class="terminal-line"><span class="terminal-success">[+]</span> Firewall rules — 12/12 validadas</div>
-          <div class="terminal-line"><span class="terminal-success">[+]</span> ISO 27001 — compliance check OK</div>
-          <div class="terminal-line"><span class="terminal-prompt">[*]</span> Generando informe PDF...</div>
-          <div class="terminal-line"><span class="terminal-success">[OK]</span> Scan completado — 1 alerta, 0 criticos</div>
-          <div class="terminal-line">$ <span style="animation: blink 1s infinite;">_</span></div>
+          <div class="product-terminal">
+            <div class="t-line"><span class="t-g">sentria ~</span> status</div>
+            <div class="t-line"><span class="t-g">[*]</span> Agente activo</div>
+            <div class="t-line"><span class="t-g">[*]</span> 3 endpoints conectados</div>
+            <div class="t-line"><span class="t-g">[+]</span> Seguridad perimetral: OK</div>
+            <div class="t-line"><span class="t-y">[!]</span> 1 alerta menor detectada</div>
+            <div class="t-line"><span class="t-g">[+]</span> Proteccion activa: OK</div>
+            <div class="t-line"><span class="t-g">[+]</span> Compliance: conforme</div>
+            <div class="t-line"><span class="t-g">[OK]</span> Sistema operativo</div>
+            <div class="t-line">$ <span style="animation: blink 1s infinite;">_</span></div>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- Methodology -->
-    <section class="section-dark" id="proceso">
+    <!-- Como trabajamos -->
+    <section class="section-darker" id="proceso">
       <div class="container">
         <div class="section-header">
-          <div class="subtitle">Como trabajamos</div>
-          <h2>Metodología</h2>
-          <p>Un proceso estructurado y transparente para blindar tu organización.</p>
+          <div class="subtitle">Nuestro metodo</div>
+          <h2>Como trabajamos</h2>
+          <p>Cada proyecto sigue un proceso claro. Sin improvisar, sin vender lo que no existe.</p>
         </div>
         <div class="steps-grid">
           <div class="step-card reveal">
             <div class="step-number">1</div>
-            <h3>Descubrimiento</h3>
-            <p>Mapeamos tu superficie de ataque, activos criticos y requisitos normativos.</p>
+            <h3>Analisis</h3>
+            <p>Entendemos el problema real, mapeamos requisitos y definimos alcance.</p>
           </div>
           <div class="step-card reveal">
             <div class="step-number">2</div>
-            <h3>Evaluación</h3>
-            <p>Auditoría técnica completa: pentesting, análisis de configuraciones y políticas.</p>
+            <h3>Desarrollo</h3>
+            <p>Construimos el producto internamente. Iteraciones rapidas, pruebas continuas.</p>
           </div>
           <div class="step-card reveal">
             <div class="step-number">3</div>
-            <h3>Implementación</h3>
-            <p>Desplegamos Sentria, configuramos alertas y aplicamos correcciones priorizadas.</p>
+            <h3>Despliegue</h3>
+            <p>Instalacion, configuracion y puesta en marcha en entornos reales.</p>
           </div>
           <div class="step-card reveal">
             <div class="step-number">4</div>
-            <h3>Monitorización</h3>
-            <p>Vigilancia 24/7 con respuesta automatizada y reportes de cumplimiento.</p>
+            <h3>Soporte</h3>
+            <p>Monitorizacion continua, actualizaciones y evolucion del producto.</p>
           </div>
         </div>
       </div>
     </section>
 
     <!-- CTA -->
-    <section class="cta-section section-darker" id="contacto">
-      <h2>¿Hablamos de tu seguridad?</h2>
-      <p>Cuéntanos tu situación y diseñamos juntos la estrategia de defensa que tu organización necesita.</p>
+    <section class="cta-section section-dark" id="contacto">
+      <h2>¿Tienes un proyecto en mente?</h2>
+      <p>Tanto si necesitas proteger tu infraestructura como si buscas un partner tecnologico para desarrollar software especializado, hablemos.</p>
       <div class="cta-buttons">
-        <a href="mailto:xprojectsau@gmail.com" class="btn btn-primary">Solicitar consultoria</a>
+        <a href="mailto:xprojectsau@gmail.com" class="btn btn-primary">Escribenos</a>
         <a href="https://www.linkedin.com/in/project-sau-10a781400/" class="btn btn-outline">LinkedIn</a>
       </div>
     </section>
@@ -1043,23 +712,22 @@
       <div class="footer-content">
         <div class="footer-brand">
           <h3>PROJECT SAU</h3>
-          <p>Infraestructura y defensa digital. Protegemos tu ecosistema con los estándares más exigentes del sector.</p>
+          <p>Empresa de desarrollo de software especializado en ciberseguridad, redes e infraestructura digital. Con sede en España.</p>
         </div>
         <div class="footer-column">
-          <h4>Soluciones</h4>
+          <h4>Productos</h4>
           <ul>
-            <li><a href="#servicios">Auditoria Ofensiva</a></li>
-            <li><a href="#servicios">Monitorización SOC</a></li>
-            <li><a href="#servicios">Cumplimiento</a></li>
-            <li><a href="#servicios">Arquitectura de Redes</a></li>
+            <li><a href="https://sentriasec.com">SentriaSec</a></li>
+            <li><a href="https://app.sentriasec.com">Panel SOC</a></li>
           </ul>
         </div>
         <div class="footer-column">
-          <h4>Producto</h4>
+          <h4>Empresa</h4>
           <ul>
-            <li><a href="#sentria">Sentria Platform</a></li>
-            <li><a href="https://app.sentriasec.com">Panel SOC</a></li>
-            <li><a href="https://github.com/xprojectsau">Repositorio</a></li>
+            <li><a href="#nosotros">Nosotros</a></li>
+            <li><a href="#areas">Areas</a></li>
+            <li><a href="#proceso">Proceso</a></li>
+            <li><a href="https://github.com/xprojectsau">GitHub</a></li>
           </ul>
         </div>
         <div class="footer-column">
@@ -1067,42 +735,31 @@
           <ul>
             <li><a href="mailto:xprojectsau@gmail.com">xprojectsau@gmail.com</a></li>
             <li><a href="https://www.linkedin.com/in/project-sau-10a781400/">LinkedIn</a></li>
-            <li><a href="https://github.com/xprojectsau">GitHub</a></li>
-          </ul>
-        </div>
-        <div class="footer-column">
-          <h4>Legal</h4>
-          <ul>
-            <li><a href="legal/aviso-legal.html">Aviso Legal</a></li>
-            <li><a href="legal/privacidad.html">Privacidad</a></li>
-            <li><a href="legal/cookies.html">Cookies</a></li>
-            <li><a href="legal/terminos.html">Términos</a></li>
           </ul>
         </div>
       </div>
       <div class="footer-bottom">
-        &copy; 2026 PROJECT SAU &middot; DEFENSE SYSTEMS &nbsp;|&nbsp;
+        &copy; 2026 Project SAU &nbsp;|&nbsp;
         <a href="legal/aviso-legal.html">Aviso Legal</a> &nbsp;|&nbsp;
         <a href="legal/privacidad.html">Privacidad</a> &nbsp;|&nbsp;
         <a href="legal/cookies.html">Cookies</a>
       </div>
     </footer>
 
-  </div><!-- /.content -->
+  </div>
 
-  <!-- ======= SCRIPTS ======= -->
   <script>
-  // --- Three.js Shader Background ---
+  // --- Shader ---
   (function() {
-    var container = document.getElementById('shader-bg');
-    var scene = new THREE.Scene();
-    var camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
-    var renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    container.appendChild(renderer.domElement);
+    var c = document.getElementById('shader-bg');
+    var s = new THREE.Scene();
+    var cam = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+    var r = new THREE.WebGLRenderer({ antialias: true });
+    r.setSize(window.innerWidth, window.innerHeight);
+    r.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    c.appendChild(r.domElement);
 
-    var material = new THREE.ShaderMaterial({
+    var m = new THREE.ShaderMaterial({
       uniforms: {
         iTime: { value: 0 },
         iResolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) }
@@ -1111,73 +768,67 @@
       fragmentShader: [
         'uniform float iTime;',
         'uniform vec2 iResolution;',
-        '#define NUM_OCTAVES 3',
-        'float rand(vec2 n){return fract(sin(dot(n,vec2(12.9898,4.1414)))*43758.5453);}',
-        'float noise(vec2 p){vec2 ip=floor(p);vec2 u=fract(p);u=u*u*(3.0-2.0*u);',
-        'float res=mix(mix(rand(ip),rand(ip+vec2(1.0,0.0)),u.x),mix(rand(ip+vec2(0.0,1.0)),rand(ip+vec2(1.0,1.0)),u.x),u.y);return res*res;}',
-        'float fbm(vec2 x){float v=0.0;float a=0.3;vec2 shift=vec2(100);mat2 rot=mat2(cos(0.5),sin(0.5),-sin(0.5),cos(0.5));',
-        'for(int i=0;i<NUM_OCTAVES;++i){v+=a*noise(x);x=rot*x*2.0+shift;a*=0.4;}return v;}',
+        '#define N 3',
+        'float R(vec2 n){return fract(sin(dot(n,vec2(12.9898,4.1414)))*43758.5453);}',
+        'float noise(vec2 p){vec2 i=floor(p);vec2 u=fract(p);u=u*u*(3.0-2.0*u);',
+        'return mix(mix(R(i),R(i+vec2(1,0)),u.x),mix(R(i+vec2(0,1)),R(i+vec2(1,1)),u.x),u.y);}',
+        'float fbm(vec2 x){float v=0.0,a=0.3;vec2 sh=vec2(100);mat2 ro=mat2(cos(.5),sin(.5),-sin(.5),cos(.5));',
+        'for(int i=0;i<N;i++){v+=a*noise(x);x=ro*x*2.0+sh;a*=.4;}return v;}',
         'void main(){',
-        'vec2 shake=vec2(sin(iTime*1.2)*0.005,cos(iTime*2.1)*0.005);',
-        'vec2 p=((gl_FragCoord.xy+shake*iResolution.xy)-iResolution.xy*0.5)/iResolution.y*mat2(2.0,-1.5,1.5,2.0);',
-        'vec2 v;vec4 o=vec4(0.0);',
-        'float f=2.0+fbm(p+vec2(iTime*5.0,0.0))*0.5;',
-        'for(float i=0.0;i<35.0;i++){',
-        'v=p+cos(i*i+(iTime+p.x*0.08)*0.025+i*vec2(13.0,11.0))*1.8+vec2(sin(iTime*3.0+i)*0.003,cos(iTime*3.5-i)*0.003);',
-        'float tailNoise=fbm(v+vec2(iTime*0.5,i))*0.3*(1.0-(i/35.0));',
-        'vec4 ac=vec4(0.1+0.3*sin(i*0.2+iTime*0.4),0.3+0.5*cos(i*0.3+iTime*0.5),0.7+0.3*sin(i*0.4+iTime*0.3),1.0);',
-        'vec4 cc=ac*exp(sin(i*i+iTime*0.8))/length(max(v,vec2(v.x*f*0.015,v.y*1.5)));',
-        'float tf=smoothstep(0.0,1.0,i/35.0)*0.6;',
-        'o+=cc*(1.0+tailNoise*0.8)*tf;}',
-        'o=tanh(pow(o/100.0,vec4(1.6)));',
+        'vec2 sk=vec2(sin(iTime*1.2)*.005,cos(iTime*2.1)*.005);',
+        'vec2 p=((gl_FragCoord.xy+sk*iResolution.xy)-iResolution.xy*.5)/iResolution.y*mat2(2.,-1.5,1.5,2.);',
+        'vec2 v;vec4 o=vec4(0);',
+        'float f=2.+fbm(p+vec2(iTime*5.,0))*.5;',
+        'for(float i=0.;i<35.;i++){',
+        'v=p+cos(i*i+(iTime+p.x*.08)*.025+i*vec2(13,11))*1.8+vec2(sin(iTime*3.+i)*.003,cos(iTime*3.5-i)*.003);',
+        'float tn=fbm(v+vec2(iTime*.5,i))*.3*(1.-i/35.);',
+        'vec4 ac=vec4(.1+.3*sin(i*.2+iTime*.4),.3+.5*cos(i*.3+iTime*.5),.7+.3*sin(i*.4+iTime*.3),1);',
+        'vec4 cc=ac*exp(sin(i*i+iTime*.8))/length(max(v,vec2(v.x*f*.015,v.y*1.5)));',
+        'o+=cc*(1.+tn*.8)*smoothstep(0.,1.,i/35.)*.6;}',
+        'o=tanh(pow(o/100.,vec4(1.6)));',
         'gl_FragColor=o*1.8;}'
       ].join('\n')
     });
 
-    var geometry = new THREE.PlaneGeometry(2, 2);
-    scene.add(new THREE.Mesh(geometry, material));
+    s.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), m));
 
-    function animate() {
-      material.uniforms.iTime.value += 0.016;
-      renderer.render(scene, camera);
-      requestAnimationFrame(animate);
-    }
-    animate();
+    (function anim(){
+      m.uniforms.iTime.value += 0.016;
+      r.render(s, cam);
+      requestAnimationFrame(anim);
+    })();
 
     window.addEventListener('resize', function() {
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      material.uniforms.iResolution.value.set(window.innerWidth, window.innerHeight);
+      r.setSize(window.innerWidth, window.innerHeight);
+      m.uniforms.iResolution.value.set(window.innerWidth, window.innerHeight);
     });
   })();
 
-  // --- Navbar scroll ---
-  (function() {
+  // --- Nav scroll ---
+  (function(){
     var nav = document.querySelector('nav');
-    window.addEventListener('scroll', function() {
+    window.addEventListener('scroll', function(){
       nav.classList.toggle('scrolled', window.scrollY > 60);
     });
   })();
 
-  // --- Reveal on scroll ---
-  (function() {
-    var obs = new IntersectionObserver(function(entries) {
-      entries.forEach(function(e) {
-        if (e.isIntersecting) {
-          e.target.classList.add('visible');
-          obs.unobserve(e.target);
-        }
+  // --- Reveal ---
+  (function(){
+    var obs = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){ e.target.classList.add('visible'); obs.unobserve(e.target); }
       });
     }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-    document.querySelectorAll('.reveal').forEach(function(el) { obs.observe(el); });
+    document.querySelectorAll('.reveal').forEach(function(el){ obs.observe(el); });
   })();
 
   // --- Smooth scroll ---
-  document.querySelectorAll('a[href^="#"]').forEach(function(a) {
-    a.addEventListener('click', function(e) {
-      var href = this.getAttribute('href');
-      if (href !== '#' && document.querySelector(href)) {
+  document.querySelectorAll('a[href^="#"]').forEach(function(a){
+    a.addEventListener('click', function(e){
+      var h = this.getAttribute('href');
+      if(h !== '#' && document.querySelector(h)){
         e.preventDefault();
-        document.querySelector(href).scrollIntoView({ behavior: 'smooth' });
+        document.querySelector(h).scrollIntoView({ behavior: 'smooth' });
       }
     });
   });
